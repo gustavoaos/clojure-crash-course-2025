@@ -1,6 +1,7 @@
 # clojure-crash-course-2025
 
-FIXME: description
+Clojure Crash Course 2025
+https://www.youtube.com/watch?v=mzNBRmZHmD4
 
 ## Installation
 
@@ -8,7 +9,7 @@ Download from http://example.com/FIXME.
 
 ## Usage
 
-FIXME: explanation
+lein run
 
     $ java -jar clojure-crash-course-2025-0.1.0-standalone.jar [args]
 
@@ -24,9 +25,17 @@ FIXME: listing of options this app accepts.
 
 ...
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+### Clojure tips
+
+Clojure uses Normal Polish Notation
+```clojure
+(operator/function arguments)
+```
+
+Converting this expression ``` 7 + 5 - (8 * 3 * 5)``` to Clojure Normal Polish Notation will result in
+```clojure
+(- (+ 7 5) (* 8 3 5))
+```
 
 ## License
 
