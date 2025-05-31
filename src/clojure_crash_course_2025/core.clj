@@ -17,3 +17,9 @@
 (defn add [x y]
   (println (+ x y))
   "calculated")
+
+; Scopes vars with `let` (attention to nested scope)
+(let [arg1 1
+      arg2 2
+      result (add arg1 arg2)]
+  (println "Result of adding" arg1 "and" arg2 "equals" result))
