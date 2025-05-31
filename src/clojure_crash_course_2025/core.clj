@@ -6,3 +6,14 @@
   []
   (println "Clojure Crash Course:"
            (utils/add 2000 25)))
+
+; Global variables & primitives
+(def my-var 1)
+
+(def my-fn (fn [x y]
+             (println (+ x y))
+             "calculated"))
+
+(defn add [x y]
+  (println (+ x y))
+  "calculated")
