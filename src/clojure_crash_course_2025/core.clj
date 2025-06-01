@@ -23,3 +23,8 @@
       arg2 2
       result (add arg1 arg2)]
   (println "Result of adding" arg1 "and" arg2 "equals" result))
+
+; Data structures
+[1 2 3]                                                     ; list
+{ "a" [1 2], "b" [3 4], 12 5}                               ; map
+#{1 2 3}                                                    ; set
