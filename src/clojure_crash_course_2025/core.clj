@@ -83,3 +83,23 @@
   (future (swap! a inc)))
 
 (deref a)
+
+; if operator
+(if true
+  "By Zeus's hammer!"                                       ; then-form
+  "By Aquaman's trident!")                                  ; optional-else-form
+
+; to do more than one expression/form on if/else conditionals
+; use do operator to wrap up multiple expressions
+(if false
+  (do (println "Success!")
+      "By Zeus's hammer!")
+  (do (println "Failure!")
+      "By Aquaman's trident!"))
+
+; when operator is a combination of if and do, but with no else branch
+; used when for do multiples things when a condition is true, and returns nil otherwise
+(when true
+  (println "Success!")
+  "By Zeus's hammer!")
+
