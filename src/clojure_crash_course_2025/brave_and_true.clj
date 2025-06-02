@@ -81,3 +81,24 @@
 ; anonymous functions
 (fn [x] (* x 3))
 #(* % 3)
+
+; let into set
+(set [1 2 3 4])                                             ; => #{1 4 3 2}
+(into [] (set [1 2 3 4]))                                   ; => [1 4 3 2]
+
+(def pokemon-team [])                                       ; bind [] to pokemon-team
+(into pokemon-team (set ["Pikachu" "Bulbasaur"]))           ; add the elements returned by the set function (Pikachu, Bulbasaur)
+                                                            ; into the pokemon-team vector
+                                                            ; => ["Bulbasaur" "Pikachu"]
+                                                            ; notice that pokemon-team vector are still an empty vector [] (ds are immutable in Clojure)
+                                                            ; So the into function will get all elements present in pokemon-team, add the new elements
+                                                            ; returned by the set function, and then return the new vector ["Bulbasaur" "Pikachu"]
+                                                            ; In this particular case, (into [] pokemon-team] (set ["Pikachu" "Bulbasaur"])) would have
+                                                            ; the same result, since pokemon-team is an empty vector
+
+; loop
+(loop [iteration 0]                                         ; for (int iteration = 0
+  (println (str "Iteration " iteration))
+  (if (> iteration 3)                                       ; iteration <= 3
+    (println "Goodbye!")
+    (recur (inc iteration))))                               ; iteration += 1)
