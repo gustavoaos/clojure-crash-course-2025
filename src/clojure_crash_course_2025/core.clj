@@ -18,6 +18,8 @@
   (println (+ x y))
   "calculated")
 
+(fn [name] (str "Hello, " name "!"))
+
 ; Scopes vars with `let` (attention to nested scope)
 (let [arg1 1
       arg2 2
@@ -63,3 +65,21 @@
 
 ; frequencies
 (frequencies vector)
+
+; Threads and concurrency
+(defn ft [name]
+  (future
+    (Thread/sleep 1000)
+    (println "Hi from" name)))
+
+(do
+  (ft "gus")
+  (println "Hi from now"))
+
+; atomic operations
+(def a (atom 0))
+(do
+  (future (swap! a inc))
+  (future (swap! a inc)))
+
+(deref a)
