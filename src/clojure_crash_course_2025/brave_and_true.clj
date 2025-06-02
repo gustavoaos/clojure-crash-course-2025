@@ -30,3 +30,14 @@
 (def failed-protagonist-names
   ["Larry Potter" "Doreen the Explorer" "The Incredible Bulk"])
 
+; data structures - numbers strings maps
+(def ds-numbers [1 2.0 1/5])
+(def ds-strings "Sora")
+(def ds-maps {:first-name "Larry" :last-name "Potter"})
+(hash-map :first-name "Larry" :last-name "Potter")
+
+; keywords could be used as functions
+(get (hash-map :first-name "Larry" :last-name "Potter") :first-name)
+(:first-name (hash-map :first-name "Larry" :last-name "Potter"))
+(:first-name (hash-map :first-name "Larry" :last-name "Potter") "default value")
+
