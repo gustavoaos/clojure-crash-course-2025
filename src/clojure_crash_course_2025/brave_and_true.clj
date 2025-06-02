@@ -41,3 +41,43 @@
 (:first-name (hash-map :first-name "Larry" :last-name "Potter"))
 (:first-name (hash-map :first-name "Larry" :last-name "Potter") "default value")
 
+; functions
+; higher-order-functions: functions that can either take a function as an argument
+;  or returns a function
+; first-class functions: programming languages who support higher-order functions;
+;  treat functions as values in the same way you treat data types like numbers and vectors
+(defn function-name
+  "docstring describing the function (optional)"
+  []                                                        ; parameters
+  ()                                                        ; function body
+  )
+
+; overloading
+(defn x-chop
+  "Describes the kind of chop you're inflicting on someone"
+  ([name chop-type]
+   (str "I " chop-type " chop " name "! Take that!"))
+  ([name]
+   (x-chop name "karate"))
+  )
+
+; rest parameters: treated as a list
+(defn attack
+  "Describes the attacks used by the Pokémon"
+  ([attack]
+   (str "Pikachu use " attack))
+  ([attack & attacks]
+   (str "Pikachu, use " attack ", then " (clojure.string/join ", " attacks)))
+  )
+
+; destructuring: instruct Clojure on how to associate names with values in lists, maps, sets, vectors.
+(defn attack
+  "Describes the attacks used by the Pokémon"
+  [[first-attack second-attack & other-attacks]]
+   (str "Pikachu, start with " first-attack ", then use " second-attack ". "
+    "If necessary you can use " (clojure.string/join ", " other-attacks))
+  )
+
+; anonymous functions
+(fn [x] (* x 3))
+#(* % 3)
