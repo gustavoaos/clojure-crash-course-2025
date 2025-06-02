@@ -8,12 +8,6 @@
            (utils/add 2000 25)))
 
 ; Global variables & primitives
-(def my-var 1)
-
-(def my-fn (fn [x y]
-             (println (+ x y))
-             "calculated"))
-
 (defn add [x y]
   (println (+ x y))
   "calculated")
@@ -33,38 +27,38 @@
 
 ; Clojure functions
 ; fn we are defining here anonymous functions
-(def vector [1 2 3 4 5])
+(def v [1 2 3 4 5])
 
 ; map
 (map (fn [element]
-       (+ element 1)) vector)
+       (+ element 1)) v)
 
 ; filter
 (filter (fn [element]
-          (odd? element)) vector)
+          (odd? element)) v)
 
 ; remove
 (remove (fn [element]
-          (odd? element)) vector)
+          (odd? element)) v)
 
 ; reduce
 (reduce (fn [acc elem]
-          (+ acc elem)) vector)
+          (+ acc elem)) v)
 
 (reduce (fn [acc elem]
           (println (+ acc elem)) (+ acc elem)
-          ) vector)
+          ) v)
 
 (reduce (fn [acc elem]
           (let [result (+ acc elem)]
             (println result) result)
-          ) vector)
+          ) v)
 
 ; group-by
-(group-by even? vector)                                     ; returns a map
+(group-by even? v)                                     ; returns a map
 
 ; frequencies
-(frequencies vector)
+(frequencies v)
 
 ; Threads and concurrency
 (defn ft [name]
@@ -83,29 +77,3 @@
   (future (swap! a inc)))
 
 (deref a)
-
-; if operator
-(if true
-  "By Zeus's hammer!"                                       ; then-form
-  "By Aquaman's trident!")                                  ; optional-else-form
-
-; to do more than one expression/form on if/else conditionals
-; use do operator to wrap up multiple expressions
-(if false
-  (do (println "Success!")
-      "By Zeus's hammer!")
-  (do (println "Failure!")
-      "By Aquaman's trident!"))
-
-; when operator is a combination of if and do, but with no else branch
-; used when for do multiples things when a condition is true, and returns nil otherwise
-(when true
-  (println "Success!")
-  "By Zeus's hammer!")
-
-; or operator, returns the first truthy value or the last value
-(or false nil :large_I_mean_venti :why_cant_I_just_say_large) ; => :large_I_mean_venti
-
-; and operator, returns the first falsy value or the last truthy value (if no values are falsey)
-(and :free_wifi :free_hot_coffee)                           ; => :free_hot_coffee
-
