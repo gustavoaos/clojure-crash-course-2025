@@ -103,3 +103,9 @@
   (println "Success!")
   "By Zeus's hammer!")
 
+; or operator, returns the first truthy value or the last value
+(or false nil :large_I_mean_venti :why_cant_I_just_say_large) ; => :large_I_mean_venti
+
+; and operator, returns the first falsy value or the last truthy value (if no values are falsey)
+(and :free_wifi :free_hot_coffee)                           ; => :free_hot_coffee
+
