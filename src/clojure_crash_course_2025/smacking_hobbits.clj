@@ -46,3 +46,15 @@
         (recur remaining                                    ; jumps back to the begging of the loop, rebinding the values
                (into final-body-parts                       ; into function adds the set result into the vector final-body-parts
                      (set [part (matching-part part)]))))))); creates a set of part, and it's matching part (unique elements)
+
+; refactor with reduce function
+; reduce abstracts the task process a collection and build a result
+(defn symmetrize-body-parts
+  "Expects a sequence of maps that have a :name and :size"
+  [asym-body-parts]
+  (reduce
+    (fn [final-body-parts part] (into final-body-parts (set [part (matching-part part)]))) ; function
+    ; the function takes as arguments the two first items of the collection
+    ; or the first item and the initial value of the accumulator when passed on
+    []                                                      ; initial accumulator value
+    asym-body-parts))                                       ; collection to reduce from
