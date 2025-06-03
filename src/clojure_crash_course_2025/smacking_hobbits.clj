@@ -79,8 +79,9 @@
       (println (str "current part: " part))
       (println (str "accumulated-size: " accumulated-size))
       (if (> accumulated-size target)
-        part                                                ; then-form, returns part
-        (recur remaining (+ accumulated-size (:size (first remaining)))))) ; recurs jumps to the loop rebinding new values
-                                                                           ;  [part & remaining] remaining
-                                                                           ;  accumulated-size (+ accumulated-size (:size (first remaining)))
+        (do (println "Oh my GOD, that poor hobbit! You monster!") part) ; then-form, returns part
+        (recur remaining
+               (+ accumulated-size (:size (first remaining))) ; recurs jumps to the loop rebinding new values
+               )))                                            ;  [part & remaining] remaining
+                                                              ;  accumulated-size (+ accumulated-size (:size (first remaining)))
     ))
