@@ -49,12 +49,38 @@
 
 ; refactor with reduce function
 ; reduce abstracts the task process a collection and build a result
+(defn build-body-parts
+  [final-body-parts part]
+  (into final-body-parts (set [part (matching-part part)])))
+
 (defn symmetrize-body-parts
   "Expects a sequence of maps that have a :name and :size"
   [asym-body-parts]
   (reduce
-    (fn [final-body-parts part] (into final-body-parts (set [part (matching-part part)]))) ; function
+    build-body-parts                                        ; function
+                                                            ; could also use anonymous function as
+                                                            ;  (fn [final-body-parts part] (into final-body-parts (set [part (matching-part part)])))
     ; the function takes as arguments the two first items of the collection
     ; or the first item and the initial value of the accumulator when passed on
     []                                                      ; initial accumulator value
     asym-body-parts))                                       ; collection to reduce from
+
+(defn hit
+  [asym-body-parts]
+  (let [sym-parts (symmetrize-body-parts asym-body-parts)
+        body-part-size-sum (reduce + (map :size sym-parts)) ; sum sizes of all sym-parts
+        target (rand body-part-size-sum)]                   ; choose a random value to hit from 0 to the total size
+    (println (str "target: " target))
+    (loop [[part & remaining] sym-parts                     ; destructured sym-parts
+                                                            ;  part: first element on sym-parts
+                                                            ; remaining: remaining elements on sym-parts
+           accumulated-size (:size part)]                   ; starts with the size of the first part on sym-parts
+                                                            ;  evaluated only on the first iteration of the loop
+      (println (str "current part: " part))
+      (println (str "accumulated-size: " accumulated-size))
+      (if (> accumulated-size target)
+        part                                                ; then-form, returns part
+        (recur remaining (+ accumulated-size (:size (first remaining)))))) ; recurs jumps to the loop rebinding new values
+                                                                           ;  [part & remaining] remaining
+                                                                           ;  accumulated-size (+ accumulated-size (:size (first remaining)))
+    ))
