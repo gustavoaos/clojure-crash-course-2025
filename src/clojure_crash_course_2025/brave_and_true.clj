@@ -168,3 +168,41 @@
 
 ; 6. Create a function that generalizes symmetrize-body-parts and the function you created in Exercise 5.
 ;    The new function should take a collection of body parts and the number of matching body parts to add.
+
+
+; Programming to Abstractions
+; Clojure defines some core functions in terms of sequence abstraction, not in terms of specific data structures.
+;   abstraction: collection of operations (similar to an interface?)
+;   sequence functions (seq functions): defined in terms of sequence abstraction, suing first, rest and cons.
+
+(defn titleize
+  [topic]
+  (str topic " for the Brave and True"))
+
+(map titleize ["Hamsters" "Ragnarok"])
+; => ("Hamsters for the Brave and True" "Ragnarok for the Brave and True")
+
+(map titleize {:uncomfortable-thing "Winking"})
+; => ("[:uncomfortable-thing \"Winking\"] for the Brave and True")
+
+(map (fn [args] (titleize (second args))) {:uncomfortable-thing "Winking"}) ; anonymous function
+(map #(titleize (second %)) {:uncomfortable-thing "Winking"})               ; anonymous function literal
+(map (fn [[k v]] (titleize v)) {:uncomfortable-thing "Winking"})            ; destructuring into a key-value pair
+; => ("Winking for the Brave and True")
+
+; Abstraction through Indirection
+;   polymorphism: Clojure applies indirection by polymorphism, dispatching to different function bodies
+;                 based on the type of the argument (that's why sequence functions works with maps, lists, vectors).
+;   multiple-arity : Similar, multiple-arity functions dispatch to different function bodies
+;                 based on the number of arguments.
+; Clojure sequence functions use indirections by applying seq function into his arguments.
+
+; Implement map using reduce
+(reduce (fn [arr value] (into arr [(inc value)]))
+        []
+        [1 3 5 7])
+(defn map-reduce
+  [values]
+  (reduce (fn [arr value] (into arr [(inc value)]))
+          []
+          values))
