@@ -206,3 +206,35 @@
   (reduce (fn [arr value] (into arr [(inc value)]))
           []
           values))
+
+; Lazy Seqs
+(def pokedex-database
+  {0 {:has-won-vgc? false, :name "Bulbasaur"}
+   1 {:has-won-vgc? false, :name "Pikachu"}
+   2 {:has-won-vgc? true, :name "Pachirisu"}
+   3 {:has-won-vgc? false, :name "Charmander"}})
+
+(defn pokemon-related-details
+  [pokedex-entry]
+  (Thread/sleep 1000)
+  (get pokedex-database pokedex-entry))
+
+(defn identify-champions
+  [pokedex-entries]
+  (first (filter :has-won-vgc? (map pokedex-database pokedex-entries))))
+
+(time (pokemon-related-details 0))
+; "Elapsed time: 1005.476041 msecs"
+; => {:has-won-vgc? false, :name "Bulbasaur"}
+
+(time (def mapped-details (map pokemon-related-details (range 0 999999))))
+; Almost instantly, cause range and map returns a lazy seq. map will only evaluate his value when
+;  you try to access the mapped element.
+; "Elapsed time: 0.310458 msecs"
+; => #'clojure-crash-course-2025.brave-and-true/mapped-details
+
+(time (first mapped-details))
+; Clojure chunks its lazy sequences, when try to realize some element, realizes some of the next elements as well,
+;  and then, cached it.
+; "Elapsed time: 32104.534625 msecs"
+; => {:has-won-vgc? false, :name "Bulbasaur"}
