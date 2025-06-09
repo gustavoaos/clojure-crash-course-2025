@@ -42,9 +42,6 @@
 (defn parse-row [string] (clojure.string/split string #","))
 ; (parse-row "Edward Cullen,10")
 ; => ["Edward Cullen" "10"]
-;
-
-(parse (slurp filename))
 
 (defn assoc-model
   "Return a map like {:name \"Edward Cullen\", :glitter-index \"10\"}"

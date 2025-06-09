@@ -71,3 +71,64 @@
       (into final-body-parts (map #(matching-alien-part part %) (range quantity))))
     []
     asym-body-parts))
+
+; ### Chapter 4 Core Functions in Depth - Exercises ###
+
+; 1. Turn the result of your glitter filter into a list of names.
+(defn glitter-filter
+  [minimum-glitter records]
+   (map :name (filter #(>= (:glitter-index %) minimum-glitter) records)))
+
+; 2. Write a function, append, which will append a new suspect to your list of suspects.
+(defn append
+  "Appends a new suspect into current suspect list"
+  [string]                                                  ; Alice Cullen,8
+  (let [suspects (mapify (parse (slurp filename)))]
+    (into suspects (mapify (parse string)))
+    ))
+
+; 3. Write a function, validate, which will check that :name and :glitter-index are present when you append.
+;    The validate function should accept two arguments: a map of keywords to validating functions,
+;    similar to conversions, and the record to be validated.
+
+(def validators {:name (complement empty?)
+                 :glitter-index integer?})
+(defn validate
+  "Validate input against key-mapping rules"
+  [validators-keys record]
+  (println "record " record)
+  (reduce (fn [valid? validator-key]
+            ;(println "valid? " valid?)
+            ;(println "validator-key " validator-key (validator-key record))
+            ;(println "validated? " ((get validators validator-key) (validator-key record)))
+            ;(println "test: " (and valid? ((get validators validator-key) (validator-key record))))
+            (and valid? ((get validators validator-key) (validator-key record))))
+          true
+          validators-keys))
+
+(defn append
+  "Appends a new suspect into current suspect list"
+  [string]                                                  ; Alice Cullen,8
+  (let [suspects (mapify (parse (slurp filename)))
+        suspect (first (mapify (parse string)))]
+    (if (true? (validate vamp-keys suspect))
+      (into suspects [suspect])
+      suspects)
+    ))
+
+; 4. Write a function that will take your list of maps and convert it back to a CSV string.
+;    You'll need to use the clojure.string/join function.
+
+(defn reduce-row [item] (reduce (fn [row-map vamp-key] (into row-map [(vamp-key item)]))
+                                    []
+                                    vamp-keys))
+(defn parse-row [row-item] (clojure.string/join "," (reduce-row row-item)))
+
+(defn parse-to-csv
+  "Convert a list into a single string line on CSV format"
+  [items]                                                    ; ({:name "Edward Cullen", :glitter-index 10})
+  (clojure.string/join "\n" (map (fn [item] (parse-row item)) items)))
+
+(def suspects (mapify (parse (slurp filename))))
+(parse-to-csv suspects)
+; => "Edward Cullen,10\nBella Swan,0\nCharlie Swan,0\nJacob Black,3\nCarlisle Cullen,6"
