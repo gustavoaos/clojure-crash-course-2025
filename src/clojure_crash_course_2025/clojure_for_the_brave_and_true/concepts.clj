@@ -171,3 +171,16 @@
 ;  and then, cached it.
 ; "Elapsed time: 32104.534625 msecs"
 ; => {:has-won-vgc? false, :name "Bulbasaur"}
+
+; Cool Thinghs to Do with Pure Functions
+
+; comp
+; Comp is used to composition of any number of functions.
+; In the example bellow is the same that (inc (* 2 3))
+((comp inc *) 2 3)
+; => 7
+
+(defn two-comp
+  [f g]
+  (fn [& args]
+    (f (apply g args))))

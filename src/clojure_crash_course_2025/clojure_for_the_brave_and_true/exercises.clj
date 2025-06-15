@@ -132,3 +132,62 @@
 (def suspects (mapify (parse (slurp filename))))
 (parse-to-csv suspects)
 ; => "Edward Cullen,10\nBella Swan,0\nCharlie Swan,0\nJacob Black,3\nCarlisle Cullen,6"
+
+; ### Chapter 5 Functional Programming - Exercises ###
+
+; 1. You used (comp :intelligence :attributes) to create a function that returns a character's intelligence.
+;    Create a new function, attr, that you can call like (attr :intelligence), and that does the same thing.
+(def character
+  { :name "Smooches McCutes"
+   :attributes {:intelligence 10
+                :strength 4
+                :dexterity 5}})
+
+(defn attr
+  "Get the value for a specific attribute"
+  [key]
+  (comp key :attributes))
+
+; 2. Implement the comp function.
+(defn c-comp
+  "Custom comp function"
+  [& fns]
+  (fn [& args]
+    (reduce (fn [acc f] (f acc))                            ; reduce function
+            (apply (last fns) args)                         ; init accumulator with applying the first (last) function
+            (reverse (butlast fns)))                        ; collection to reduce
+    ))
+
+; 2. Implement the assoc-in function.
+;    Hint: use the assoc function and define its parameters as [m [k & ks] v].
+(assoc-in character [:attributes :age] 12)
+; => {:name "Smooches McCutes", :attributes {:intelligence 10, :strength 4, :dexterity 5, :age 12}}
+
+(defn c-assoc-in
+  "Custom assoc-in function"
+  [m [k & ks] v]                                            ; destruct the list of functions to apply into k and rest
+  (if (empty? ks)                                           ; if there are no more attributes to put into m,
+    (assoc m k v)                                           ;   then apply value v into m
+    (assoc m k (c-assoc-in (get m k {}) ks v)))             ; ex.: (c-assoc-in character [:attributes :age] 12)
+                                                            ;   assoc character :attributes
+                                                            ; c-assoc-in
+                                                            ;  get character :attributes {} ({} if get response is nil, returns {})
+                                                            ;   {:intelligence 10, :strength 4, :dexterity 5, :age 12}
+  )
+
+; 4. Look up and use the update-in function.
+; (update-in m ks f & args)
+(update-in character [:attributes :intelligence] inc)
+; => {:name "Smooches McCutes", :attributes {:intelligence 11, :strength 4, :dexterity 5}}
+
+; 5. Implement the update-in function.
+(defn c-update-in
+  "Custom update-in function"
+  [m [k & ks] fn & args]
+  (println m)
+  (if (empty? ks)
+    (apply update m k fn args)
+    (assoc m k (apply c-update-in (get m k {}) ks fn args)))
+  )
+(c-update-in character [:attributes :intelligence] inc)
+(c-update-in {:attributes {:items [1 2]}} [:attributes :items] conj 3)
